@@ -1,6 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React UI</title>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
+</html>
+
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
 <script>
+  import React from "react";
 
+  export default function App() {
+    const dataset = "89 30 25 32 72 70 51 42 25 24 53 55 78 50 13 40 48 32 26 2 14 33 45 72 56 44 21 88 27 68 15 62 93 98 73 28 16 46 87 28 65 38 67 16 85 63 23 69 64 91 9 70 81 27 97 82 6 88 3 7 46 13 11 64 76 31 26 38 28 13 17 69 90 1 6 7 64 43 9 73 80 98 46 27 22 87 49 83 6 39 42 51 54 84 34 53 78 40 14 5".split(" ");
+    // eslint-disable-next-line
+    const sorted = [...dataset]
+    sorted.sort();
 
+    function handleLinearSearch(e) {
+      e.preventDefault();
+      console.log('linear found it', linearArraySearch(e.target.term.value));
+      console.log('binary found it', binaryArraySearch(e.target.term.value));
+    }
+
+    function linearArraySearch(term) {
+      for (let i = 0; i < dataset.length; i++) {
+        if (dataset[i] === term) {
+          console.log('how many attempts', i + 1);
+          return dataset[i];
+        }
+      }
+      return 'not found'
+    }
+
+    function binaryArraySearch(value, start, end) {
+      start = start === undefined ? 0 : start;
+      end = end === undefined ? sorted.length : end;
+      if (start > end) {
+        return -1;
+      }
+      const index = Math.floor((start + end) / 2);
+      const item = sorted[index];
+
+      console.log(start, end);
+      if (item == value) {
+        return index;
+      }
+      else if (item < value) {
+        return binaryArraySearch(value, index + 1, end);
+      }
+      else if (item > value) {
+        return binaryArraySearch(value, start, index - 1);
+      }
+    }
+
+    let linearResult;
+    let sortedResult;
+    console.log('outside of handler', linearResult)
+    return (
+      <div>
+        <form id='search' onSubmit={(e) => handleLinearSearch(e)}>
+          <label htmlFor='term'>Search term</label>
+          <input type='text' name='term'></input>
+          <button type='submit' >search</button>
+        </form>
+      </div >
+    )
+  }
 
 
 </script>
